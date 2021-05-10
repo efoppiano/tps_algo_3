@@ -11,19 +11,19 @@ DenotativeObject subclass: #Caja
 Caja class
 	instanceVariableNames: 'contenido'!
 
-!Caja class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 13:00:29'!
+!Caja class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 12:57:10'!
 agregarElementos: coleccionDeElementos
-	^contenido addAll: coleccionDeElementos. ! !
+	^contenido addAll: coleccionDeElementos.! !
 
 !Caja class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 13:11:43'!
 cantidadDe: unElemento
 	^contenido count: [ :cadaElemento | cadaElemento = unElemento ].! !
 
-!Caja class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 22:34:39'!
+!Caja class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 13:14:29'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	contenido := ((OrderedCollection new) add: 'una mena de carbon'; add: 'una mena de hierro'; yourself).! !
+	contenido := ((OrderedCollection new)).! !
 
 !Caja class methodsFor: 'as yet unclassified' stamp: 'EF 5/8/2021 17:37:47'!
 vaciar
@@ -43,9 +43,9 @@ DenotativeObject subclass: #CintaA
 CintaA class
 	instanceVariableNames: 'destino contenido'!
 
-!CintaA class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 12:57:27'!
+!CintaA class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 12:56:59'!
 agregarElementos: coleccionDeElementos
-	^destino agregarElementos: coleccionDeElementos.! !
+	^contenido addAll: coleccionDeElementos.! !
 
 !CintaA class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 13:11:48'!
 cantidadDe: unElemento
@@ -55,7 +55,7 @@ cantidadDe: unElemento
 destino: unDestino 
 	destino _ unDestino.! !
 
-!CintaA class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 22:34:39'!
+!CintaA class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 13:14:29'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -85,9 +85,9 @@ DenotativeObject subclass: #CintaB
 CintaB class
 	instanceVariableNames: 'destino contenido'!
 
-!CintaB class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 12:57:43'!
+!CintaB class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 12:57:05'!
 agregarElementos: coleccionDeElementos
-	^destino agregarElementos: coleccionDeElementos.! !
+	^contenido addAll: coleccionDeElementos.! !
 
 !CintaB class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 13:11:53'!
 cantidadDe: unElemento
@@ -97,7 +97,7 @@ cantidadDe: unElemento
 destino: unDestino 
 	destino _ unDestino.! !
 
-!CintaB class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 22:34:39'!
+!CintaB class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 13:14:29'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -165,12 +165,12 @@ extraer
 	self sacarEnergia: energiaConsumida.
 	^self depositarMenasEnDestino: cantidadDeMenas.! !
 
-!ExtractorDeCarbon class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 22:34:39'!
+!ExtractorDeCarbon class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 13:14:29'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
 	energiaActual := (SimpleMeasure basicNew instVarAt: 1 put: 0; instVarAt: 2 put: (BaseUnit basicNew instVarAt: 1 put: 'joule'; instVarAt: 2 put: 'joules'; instVarAt: 3 put: 'j'; yourself); yourself).
-	destino := CintaA.! !
+	destino := Caja.! !
 
 !ExtractorDeCarbon class methodsFor: 'as yet unclassified' stamp: 'SF 4/20/2021 18:30:27'!
 menasAExtraerSegunEnergiaActual
@@ -236,12 +236,12 @@ extraer
 	self sacarEnergia: energiaConsumida.
 	^self depositarMenasEnDestino: cantidadDeMenas.! !
 
-!ExtractorDeHierro class methodsFor: 'as yet unclassified' stamp: 'EF 5/9/2021 22:34:39'!
+!ExtractorDeHierro class methodsFor: 'as yet unclassified' stamp: 'EF 5/10/2021 13:14:29'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
 	energiaActual := (SimpleMeasure basicNew instVarAt: 1 put: 0; instVarAt: 2 put: (BaseUnit basicNew instVarAt: 1 put: 'joule'; instVarAt: 2 put: 'joules'; instVarAt: 3 put: 'j'; yourself); yourself).
-	destino := CintaB.! !
+	destino := Caja.! !
 
 !ExtractorDeHierro class methodsFor: 'as yet unclassified' stamp: 'EF 5/8/2021 17:51:39'!
 menasAExtraerSegunEnergiaActual
