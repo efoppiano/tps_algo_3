@@ -21,14 +21,14 @@ TestCase subclass: #CustomerBookTest
 	poolDictionaries: ''
 	category: 'CodigoRepetido-Ejercicio'!
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'EF 5/18/2021 12:44:41'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'EF 5/20/2021 14:00:44'!
 test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 
 	self assertExecutingClosure: [customerBook addCustomerNamed: johnLennon.] shouldNotTakeMoreThan: 50 * millisecond.
 	
 ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'EF 5/18/2021 12:44:50'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'EF 5/20/2021 14:01:30'!
 test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 
 	customerBook addCustomerNamed: paulMcCartney.
@@ -112,22 +112,22 @@ addAndSuspendCustomer: customerToAddAndSuspend fromCustomerBookAndThenPerformAct
 	customerBook suspendCustomerNamed: customerToAddAndSuspend.
 	actionPerformedAfterAddingAndSuspendingTheCustomer value.! !
 
-!CustomerBookTest methodsFor: 'discardedMethods' stamp: 'EF 5/18/2021 12:59:57'!
+!CustomerBookTest methodsFor: 'discardedMethods' stamp: 'EF 5/20/2021 17:26:01'!
 _test05Alternativa
 	
 	self addAndSuspendCustomer: paulMcCartney fromCustomerBookAndThenPerformAction: [].
 	
-	self assertCustomerBookHasSuspendedCustomers: 1 andActiveCustomers: 1 andTotalCustomers: 0.
+	self assertCustomerBookHasSuspendedCustomers: 1 andActiveCustomers: 0 andTotalCustomers: 1.
 	
 	self assert: (customerBook includesCustomerNamed: paulMcCartney).
 	! !
 
-!CustomerBookTest methodsFor: 'discardedMethods' stamp: 'EF 5/18/2021 13:00:05'!
+!CustomerBookTest methodsFor: 'discardedMethods' stamp: 'EF 5/20/2021 17:26:10'!
 _test06Alternativa
 	
 	self addAndSuspendCustomer: paulMcCartney fromCustomerBookAndThenPerformAction: [customerBook removeCustomerNamed: paulMcCartney.].
 	
-	self assertCustomerBookHasSuspendedCustomers: 1 andActiveCustomers: 1 andTotalCustomers: 0.
+	self assertCustomerBookHasSuspendedCustomers: 0 andActiveCustomers: 0 andTotalCustomers: 0.
 	
 	self deny: (customerBook includesCustomerNamed: paulMcCartney).
 
@@ -212,7 +212,7 @@ addCustomerNamed: aName
 		
 	active add: aName ! !
 
-!CustomerBook methodsFor: 'customer management' stamp: 'EF 5/14/2021 02:21:55'!
+!CustomerBook methodsFor: 'customer management' stamp: 'EF 5/20/2021 14:06:10'!
 removeCustomerNamed: aName 
  	
 	active remove: aName ifAbsent: [
