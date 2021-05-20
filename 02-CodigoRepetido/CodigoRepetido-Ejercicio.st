@@ -156,11 +156,11 @@ assertCustomerBookHasSuspendedCustomers: expectedNumberOfSuspendedCustomers andA
 	self assert: expectedNumberOfSuspendedCustomers equals: customerBook numberOfSuspendedCustomers.
 	self assert: expectedNumberOfTotalCustomers equals: customerBook numberOfCustomers.! !
 
-!CustomerBookTest methodsFor: 'assertions' stamp: 'EF 5/17/2021 20:06:29'!
+!CustomerBookTest methodsFor: 'assertions' stamp: 'EF 5/20/2021 13:40:30'!
 assertExecutingClosure: blockClosureToRun shouldNotTakeMoreThan: expectedMaxTimeDuration
 	
 	| timeToRunBlockClosure |
-	timeToRunBlockClosure := blockClosureToRun timeToRun.
+	timeToRunBlockClosure := blockClosureToRun timeToRun * millisecond.
 	
 	self assert: timeToRunBlockClosure < expectedMaxTimeDuration
 	
@@ -175,12 +175,13 @@ assertExecutingClosure: blockClosureToRun throwsError: errorName andVerifies: ve
 		do: verificationsThatMustVerifyAfterError! !
 
 
-!CustomerBookTest methodsFor: 'initialization' stamp: 'EF 5/18/2021 12:44:16'!
+!CustomerBookTest methodsFor: 'initialization' stamp: 'EF 5/20/2021 13:52:18'!
 setUp
 
 	customerBook := CustomerBook new.
 	johnLennon := 'John Lennon'.
-	paulMcCartney := 'Paul McCartney'.! !
+	paulMcCartney := 'Paul McCartney'.
+	ringoStarr := 'Ringo Starr'.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
