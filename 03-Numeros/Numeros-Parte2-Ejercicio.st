@@ -336,25 +336,46 @@ isZero
 	self subclassResponsibility ! !
 
 
-!Numero methodsFor: 'private' stamp: 'EF 5/27/2021 23:10:50'!
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/27/2021 23:10:50'!
 beAddedToEntero: anEnteroAugend
 
 	self subclassResponsibility.! !
 
-!Numero methodsFor: 'private' stamp: 'EF 5/27/2021 23:11:25'!
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/27/2021 23:11:25'!
 beAddedToFraccion: anFraccionAugend
 
 	self subclassResponsibility.! !
 
-!Numero methodsFor: 'private' stamp: 'EF 5/27/2021 23:11:56'!
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/31/2021 02:08:43'!
+beSubtractedFromEntero: anEnteroMinuend
+
+	self subclassResponsibility.! !
+
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/31/2021 02:09:00'!
+beSubtractedFromFraccion: aFraccionMinuend
+
+	self subclassResponsibility.! !
+
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/27/2021 23:11:56'!
 divideEntero: anEnteroDividend
 
 	self subclassResponsibility.! !
 
-!Numero methodsFor: 'private' stamp: 'EF 5/27/2021 23:11:47'!
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/27/2021 23:11:47'!
 divideFraccion: aFraccionDividend
 
 	self subclassResponsibility.! !
+
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/31/2021 02:12:01'!
+multiplyEntero: anEnteroMultiplicand
+
+	self subclassResponsibility.! !
+
+!Numero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/31/2021 02:12:11'!
+multiplyFraccion: aFraccionMultiplicand
+
+	self subclassResponsibility.! !
+
 
 !Numero methodsFor: 'private' stamp: 'HernanWilkinson 5/7/2016 22:48'!
 invalidNumberType
@@ -398,9 +419,8 @@ Numero subclass: #Entero
 
 ! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'EF 5/29/2021 19:05:22'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'EF 5/30/2021 02:32:34'!
 - aSubtrahend 
-	
 	
 	^aSubtrahend beSubtractedFromEntero: self.! !
 
@@ -533,10 +553,14 @@ multiplyEntero: anEnteroMultiplicand
 	^self class with: value * anEnteroMultiplicand integerValue
 	! !
 
-!Entero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/29/2021 19:10:13'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'EF 5/31/2021 12:37:57'!
 multiplyFraccion: aFraccionMultiplicand
 	
-	^(aFraccionMultiplicand numerator * self)/(aFraccionMultiplicand denominator)! !
+	| newNumerator newDenominator |
+	
+	newNumerator := aFraccionMultiplicand numerator * self.
+	newDenominator := aFraccionMultiplicand denominator.
+	^newNumerator/newDenominator! !
 
 
 !Entero methodsFor: 'checks' stamp: 'EF 5/29/2021 18:04:53'!
@@ -569,16 +593,15 @@ Entero class
 negativeFibonacciErrorDescription
 	^ ' Fibonacci no está definido aquí para Enteros Negativos'! !
 
-!Entero class methodsFor: 'instance creation' stamp: 'EF 5/29/2021 20:42:54'!
+!Entero class methodsFor: 'instance creation' stamp: 'EF 5/29/2021 22:19:01'!
 with: aValue 
 
-	| EnteroSubclasses indexClassToInstantiate classToInstantiate |
+	| classToInstantiate |
+	
 	"Esta verificacion esta puesta por si se equivocan y quieren crear un Entero pasando otra cosa que un Integer - Hernan"
 	aValue isInteger ifFalse: [  self error: 'aValue debe ser anInteger' ].
 	
-	EnteroSubclasses := Entero allSubclasses.
-	indexClassToInstantiate := EnteroSubclasses findFirst: [:class | class isAbleToInstantiateWith: aValue ].
-	classToInstantiate := EnteroSubclasses at: indexClassToInstantiate.
+	classToInstantiate := Entero allSubclasses detect: [:class | class isAbleToInstantiateWith: aValue ].
 	^classToInstantiate new initializeWith: aValue.! !
 
 
@@ -589,22 +612,25 @@ Entero subclass: #Cero
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:04:53'!
+!Cero methodsFor: 'checks' stamp: 'EF 5/29/2021 18:04:53'!
 ifCero: aClosure
 	
 	^aClosure value.
 	! !
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:18:07'!
+!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 02:16:28'!
 ifMayorQueUno: aClosure
+
 	^self.! !
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:18:11'!
+!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 02:16:32'!
 ifNegativo: aClosure
+
 	^self.! !
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:18:14'!
+!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 02:16:36'!
 ifUno: aClosure
+
 	^self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -613,8 +639,9 @@ ifUno: aClosure
 Cero class
 	instanceVariableNames: ''!
 
-!Cero class methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 20:34:51'!
+!Cero class methodsFor: 'as yet unclassified' stamp: 'EF 5/31/2021 12:39:55'!
 isAbleToInstantiateWith: aValue
+
 	^aValue = 0.! !
 
 
@@ -625,21 +652,24 @@ Entero subclass: #Negativo
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:18:02'!
-ifCero: aClosure
+!Negativo methodsFor: 'checks' stamp: 'EF 5/31/2021 12:41:59'!
+ifCero: alternativeBlock
+
 	^self.! !
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:17:52'!
-ifMayorQueUno: aClosure
+!Negativo methodsFor: 'checks' stamp: 'EF 5/31/2021 12:42:02'!
+ifMayorQueUno: alternativeBlock
+
 	^self.! !
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:05:20'!
-ifNegativo: aClosure
+!Negativo methodsFor: 'checks' stamp: 'EF 5/31/2021 12:42:08'!
+ifNegativo: alternativeBlock
 
-	^aClosure value.! !
+	^alternativeBlock value.! !
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:17:58'!
-ifUno: aClosure
+!Negativo methodsFor: 'checks' stamp: 'EF 5/31/2021 12:42:12'!
+ifUno: alternativeBlock
+
 	^self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -648,8 +678,9 @@ ifUno: aClosure
 Negativo class
 	instanceVariableNames: ''!
 
-!Negativo class methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 20:34:51'!
+!Negativo class methodsFor: 'as yet unclassified' stamp: 'EF 5/31/2021 12:39:59'!
 isAbleToInstantiateWith: aValue
+
 	^aValue < 0.! !
 
 
@@ -660,21 +691,15 @@ Entero subclass: #Positivo
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Positivo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:04:53'!
-ifCero: aClosure! !
-
-!Positivo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:05:32'!
-ifMayorQueUno: aClosure
+!Positivo methodsFor: 'checks' stamp: 'EF 5/31/2021 12:42:26'!
+ifCero: alternativeBlock
 	
-	self subclassResponsibility.! !
+	^self.! !
 
-!Positivo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:05:20'!
-ifNegativo: aClosure! !
+!Positivo methodsFor: 'checks' stamp: 'EF 5/31/2021 12:42:22'!
+ifNegativo: alternativeBlock
 
-!Positivo methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:05:03'!
-ifUno: aClosure
-	
-	self subclassResponsibility.! !
+	^self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -682,8 +707,10 @@ ifUno: aClosure
 Positivo class
 	instanceVariableNames: ''!
 
-!Positivo class methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 20:34:51'!
+!Positivo class methodsFor: 'as yet unclassified' stamp: 'EF 5/31/2021 12:40:06'!
 isAbleToInstantiateWith: aValue
+
+	"Una clase abstracta no puede instanciarse"
 	^false! !
 
 
@@ -694,13 +721,14 @@ Positivo subclass: #MayorQueUno
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!MayorQueUno methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:05:32'!
-ifMayorQueUno: aClosure
+!MayorQueUno methodsFor: 'checks' stamp: 'EF 5/31/2021 12:43:04'!
+ifMayorQueUno: alternativeBlock
 	
-	^aClosure value.! !
+	^alternativeBlock value.! !
 
-!MayorQueUno methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:18:21'!
-ifUno: aClosure
+!MayorQueUno methodsFor: 'checks' stamp: 'EF 5/31/2021 12:43:08'!
+ifUno: alternativeBlock
+
 	^self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -709,8 +737,9 @@ ifUno: aClosure
 MayorQueUno class
 	instanceVariableNames: ''!
 
-!MayorQueUno class methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 20:34:51'!
+!MayorQueUno class methodsFor: 'as yet unclassified' stamp: 'EF 5/31/2021 12:40:11'!
 isAbleToInstantiateWith: aValue
+
 	^aValue > 1.! !
 
 
@@ -721,14 +750,15 @@ Positivo subclass: #Uno
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Uno methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 19:18:29'!
-ifMayorQueUno: aClosure
+!Uno methodsFor: 'checks' stamp: 'EF 5/31/2021 12:43:12'!
+ifMayorQueUno: alternativeBlock
+
 	^self.! !
 
-!Uno methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 18:05:03'!
-ifUno: aClosure
+!Uno methodsFor: 'checks' stamp: 'EF 5/31/2021 12:43:16'!
+ifUno: alternativeBlock
 	
-	^aClosure value.! !
+	^alternativeBlock value.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -736,8 +766,9 @@ ifUno: aClosure
 Uno class
 	instanceVariableNames: ''!
 
-!Uno class methodsFor: 'as yet unclassified' stamp: 'EF 5/29/2021 20:34:51'!
+!Uno class methodsFor: 'as yet unclassified' stamp: 'EF 5/31/2021 12:40:15'!
 isAbleToInstantiateWith: aValue
+
 	^aValue = 1.! !
 
 
@@ -878,10 +909,14 @@ divideEntero: anEnteroDividend
 	
 	^newNumerator/newDenominator.! !
 
-!Fraccion methodsFor: 'arithmetic operations - private' stamp: 'EF 5/27/2021 23:08:32'!
+!Fraccion methodsFor: 'arithmetic operations - private' stamp: 'EF 5/31/2021 12:46:07'!
 divideFraccion: aFraccionDividend
 
-	^(denominator * aFraccionDividend numerator) / (numerator * aFraccionDividend denominator)! !
+	| newNumerator newDenominator |
+	
+	newNumerator := denominator * aFraccionDividend numerator.
+	newDenominator := numerator * aFraccionDividend denominator.
+	^newNumerator/newDenominator! !
 
 !Fraccion methodsFor: 'arithmetic operations - private' stamp: 'EF 5/29/2021 19:10:28'!
 multiplyEntero: anEnteroMultiplicand
@@ -907,7 +942,7 @@ multiplyFraccion: aFraccionMultiplicand
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'EF 5/29/2021 18:05:20'!
+!Fraccion class methodsFor: 'intance creation' stamp: 'EF 5/29/2021 22:21:13'!
 with: aDividend over: aDivisor
 
 	| greatestCommonDivisor numerator denominator |
@@ -921,7 +956,7 @@ with: aDividend over: aDivisor
 	numerator := aDividend // greatestCommonDivisor.
 	denominator := aDivisor // greatestCommonDivisor.
 	
-	denominator isOne ifTrue: [ ^numerator ].
+	denominator ifUno: [ ^numerator ].
 
 	^self new initializeWith: numerator over: denominator
 	! !
