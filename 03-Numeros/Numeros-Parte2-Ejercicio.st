@@ -563,23 +563,23 @@ multiplyFraccion: aFraccionMultiplicand
 	^newNumerator/newDenominator! !
 
 
-!Entero methodsFor: 'checks' stamp: 'EF 5/29/2021 18:04:53'!
-ifCero: aClosure
+!Entero methodsFor: 'checks' stamp: 'EF 5/31/2021 13:04:28'!
+ifCero: alternativeBlock
 	
 	^self subclassResponsibility.! !
 
-!Entero methodsFor: 'checks' stamp: 'EF 5/29/2021 18:05:32'!
-ifMayorQueUno: aClosure
+!Entero methodsFor: 'checks' stamp: 'EF 5/31/2021 13:04:31'!
+ifMayorQueUno: alternativeBlock
 	
 	^self subclassResponsibility.! !
 
-!Entero methodsFor: 'checks' stamp: 'EF 5/29/2021 18:05:20'!
-ifNegativo: aClosure
+!Entero methodsFor: 'checks' stamp: 'EF 5/31/2021 13:04:34'!
+ifNegativo: alternativeBlock
 	
 	^self subclassResponsibility.! !
 
-!Entero methodsFor: 'checks' stamp: 'EF 5/29/2021 18:05:03'!
-ifUno: aClosure
+!Entero methodsFor: 'checks' stamp: 'EF 5/31/2021 13:04:38'!
+ifUno: alternativeBlock
 	
 	^self subclassResponsibility.! !
 
