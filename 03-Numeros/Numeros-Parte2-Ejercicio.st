@@ -612,24 +612,24 @@ Entero subclass: #Cero
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Cero methodsFor: 'checks' stamp: 'EF 5/29/2021 18:04:53'!
-ifCero: aClosure
+!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 12:56:15'!
+ifCero: alternativeBlock
 	
-	^aClosure value.
+	^alternativeBlock value.
 	! !
 
-!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 02:16:28'!
-ifMayorQueUno: aClosure
+!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 12:56:18'!
+ifMayorQueUno: alternativeBlock
 
 	^self.! !
 
-!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 02:16:32'!
-ifNegativo: aClosure
+!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 12:56:21'!
+ifNegativo: alternativeBlock
 
 	^self.! !
 
-!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 02:16:36'!
-ifUno: aClosure
+!Cero methodsFor: 'checks' stamp: 'EF 5/31/2021 12:56:25'!
+ifUno: alternativeBlock
 
 	^self.! !
 
