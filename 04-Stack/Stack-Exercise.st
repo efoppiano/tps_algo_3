@@ -91,7 +91,7 @@ test07TopDoesNotRemoveObjectFromStack
 	self assert: stack size = 1.
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'HAW 4/14/2017 22:48:26'!
+!OOStackTest methodsFor: 'test' stamp: 'EF 6/10/2021 18:09:15'!
 test08CanNotPopWhenThereAreNoObjectsInTheStack
 
 	| stack  |
@@ -137,6 +137,98 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 ! !
 
 
+!classDefinition: #LimitedStackTest category: 'Stack-Exercise'!
+OOStackTest subclass: #LimitedStackTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!LimitedStackTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:04:48'!
+test01LimitedStackShouldBeEmptyWhenCreated
+
+	| stack |
+	
+	stack := OOStack newWithMax: 5.
+	
+	self assert: stack isEmpty! !
+
+!LimitedStackTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:07:19'!
+test02CanPushWhileLimitIsNotReached
+
+	| stack |
+	
+	stack := OOStack newWithMax: 5.
+	
+	stack push: 5.
+	stack push: 1.
+	self deny: stack isEmpty.
+	self assert: 2 equals: stack size.! !
+
+!LimitedStackTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:29:46'!
+test03CanNotPushWhenLimitIsReached
+
+	| stack |
+	
+	stack := OOStack newWithMax: 2.
+	
+	stack push: 5.
+	stack push: 1.
+	self
+	should: [	stack push: 8.]
+	raise: Error
+	withExceptionDo: [ :anError |
+			self assert: anError messageText = LimitedStack maxSizeReachedErrorMessage ].! !
+
+!LimitedStackTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:30:48'!
+test04CanPopWhenLimitIsNotReached
+
+	| stack |
+	
+	stack := OOStack newWithMax: 2.
+	
+	stack push: 5.
+	stack pop.
+	self assert: stack isEmpty.! !
+
+!LimitedStackTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:37:33'!
+test05CanPopWhenLimitIsReached
+
+	| stack |
+	
+	stack := OOStack newWithMax: 2.
+	
+	stack push: 5.
+	stack push: 15.
+	stack pop.
+	self assert: 1 equals: stack size.! !
+
+!LimitedStackTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:40:57'!
+test06CanNotPopEmptyStack
+
+	| stack |
+	
+	stack := OOStack newWithMax: 2.
+	
+	self
+	should: [stack pop]
+	raise: Error
+	withExceptionDo: [ :anError |
+			self assert: anError messageText = LimitedStack stackEmptyErrorDescription ].! !
+
+!LimitedStackTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:53:01'!
+test07PopReturnsLastPushedObject
+
+	| stack |
+	
+	stack := OOStack newWithMax: 10.
+	
+	stack push: 10.
+	stack push: 8.
+	stack push: 9.
+	self assert: 9 equals: stack pop.! !
+
+
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
 	instanceVariableNames: 'emptyStack oneElementStack threeElementsStack multipleMatchesStack'
@@ -162,12 +254,13 @@ setUp
 	multipleMatchesStack push: 'El cielo es azul'.! !
 
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'EF 6/8/2021 10:09:06'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'EF 6/10/2021 17:33:57'!
 test01PrefixCanNotBeEmpty
 	
 	"
-	No testeamos el mensaje #beginsWith porque consideramos que
-	ya se encuentra testeado por SmallTalk y funciona correctamente
+	No testeamos el comportamiento relacionado al mensaje #beginsWith
+	porque consideramos que 	ya se encuentra testeado por SmallTalk y
+	funciona correctamente
 	"
 	
 	self
@@ -260,7 +353,7 @@ test08SentenceFinderShouldNotFailWhenNotFindingAnyMatchingSentence
 
 !classDefinition: #OOStack category: 'Stack-Exercise'!
 Object subclass: #OOStack
-	instanceVariableNames: 'topPlate size'
+	instanceVariableNames: 'topPlate'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
@@ -270,17 +363,22 @@ isEmpty
 
 	^self size = 0! !
 
+!OOStack methodsFor: 'checks' stamp: 'EF 6/10/2021 15:46:21'!
+isFull
+	self subclassResponsibility.! !
 
-!OOStack methodsFor: 'accessing' stamp: 'EF 6/8/2021 10:22:03'!
+
+!OOStack methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:13:13'!
 pop
-	
+
 	| lastPushedContent |
+	
 	lastPushedContent := self top.
 	topPlate := topPlate lowerPlate.
 	^lastPushedContent.
 	! !
 
-!OOStack methodsFor: 'accessing' stamp: 'EF 6/8/2021 10:24:19'!
+!OOStack methodsFor: 'accessing' stamp: 'EF 6/10/2021 17:58:35'!
 push: aContent
 	
 	| newTopPlate |
@@ -313,6 +411,208 @@ stackEmptyErrorDescription
 	
 	^ 'Stack is empty'! !
 
+
+!OOStack class methodsFor: 'instantiation' stamp: 'EF 6/10/2021 17:02:46'!
+new
+
+	^UnlimitedStack basicNew initialize.! !
+
+!OOStack class methodsFor: 'instantiation' stamp: 'EF 6/10/2021 16:44:17'!
+newWithMax: aStackMaxSize
+
+	^LimitedStack basicNew initializeWithMax: aStackMaxSize.! !
+
+
+!classDefinition: #LimitedStack category: 'Stack-Exercise'!
+OOStack subclass: #LimitedStack
+	instanceVariableNames: 'maxSize'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!LimitedStack methodsFor: 'accessing - safe' stamp: 'EF 6/10/2021 18:00:53'!
+safePop
+	
+	^super pop.! !
+
+!LimitedStack methodsFor: 'accessing - safe' stamp: 'EF 6/10/2021 18:00:47'!
+safePush: aContent
+	
+	^super push: aContent.! !
+
+
+!LimitedStack methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:16:26'!
+pop
+
+	| stackCondition |
+	
+	stackCondition := OOStackCondition withStack: self.
+	^stackCondition popFrom: self.
+	! !
+
+!LimitedStack methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:16:26'!
+push: aContent
+
+	| stackCondition |
+	
+	stackCondition := OOStackCondition withStack: self.
+	^stackCondition push: aContent to: self.! !
+
+
+!LimitedStack methodsFor: 'checks' stamp: 'EF 6/10/2021 15:47:24'!
+isFull
+	^self size = maxSize.! !
+
+
+!LimitedStack methodsFor: 'initialization' stamp: 'EF 6/10/2021 16:51:04'!
+initializeWithMax: aMaxStackSize
+
+	topPlate := StackBasePlate new.
+	maxSize := aMaxStackSize.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'LimitedStack class' category: 'Stack-Exercise'!
+LimitedStack class
+	instanceVariableNames: ''!
+
+!LimitedStack class methodsFor: 'error descriptions' stamp: 'EF 6/10/2021 16:54:10'!
+maxSizeReachedErrorMessage
+
+	^'Maximum stack size reached'! !
+
+
+!classDefinition: #UnlimitedStack category: 'Stack-Exercise'!
+OOStack subclass: #UnlimitedStack
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!UnlimitedStack methodsFor: 'checks' stamp: 'EF 6/10/2021 15:46:35'!
+isFull
+	^false.! !
+
+
+!classDefinition: #OOStackCondition category: 'Stack-Exercise'!
+Object subclass: #OOStackCondition
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!OOStackCondition methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 18:04:44'!
+popFrom: aStack
+
+	self subclassResponsibility.! !
+
+!OOStackCondition methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 18:04:47'!
+push: aContent to: aStack
+
+	self subclassResponsibility.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'OOStackCondition class' category: 'Stack-Exercise'!
+OOStackCondition class
+	instanceVariableNames: ''!
+
+!OOStackCondition class methodsFor: 'as yet unclassified' stamp: 'EF 6/10/2021 18:16:26'!
+withStack: aStack
+
+	| matchingCondition |
+	
+	matchingCondition := OOStackCondition subclasses detect: [:aClass | aClass matchesStackCondition: aStack].
+	^matchingCondition new.! !
+
+
+!classDefinition: #EmptyStack category: 'Stack-Exercise'!
+OOStackCondition subclass: #EmptyStack
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!EmptyStack methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 17:36:52'!
+popFrom: aStack
+
+	self error: LimitedStack stackEmptyErrorDescription.! !
+
+!EmptyStack methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 16:29:22'!
+push: aContent to: aStack
+
+	^aStack safePush: aContent.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'EmptyStack class' category: 'Stack-Exercise'!
+EmptyStack class
+	instanceVariableNames: ''!
+
+!EmptyStack class methodsFor: 'matching' stamp: 'EF 6/10/2021 16:19:50'!
+matchesStackCondition: aStack
+	
+	^aStack isEmpty.! !
+
+
+!classDefinition: #FullStack category: 'Stack-Exercise'!
+OOStackCondition subclass: #FullStack
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!FullStack methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 16:57:27'!
+popFrom: aStack
+
+	^aStack safePop.! !
+
+!FullStack methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 16:54:31'!
+push: aContent to: aStack
+	
+	self error: LimitedStack maxSizeReachedErrorMessage.
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'FullStack class' category: 'Stack-Exercise'!
+FullStack class
+	instanceVariableNames: ''!
+
+!FullStack class methodsFor: 'matching' stamp: 'EF 6/10/2021 17:24:41'!
+matchesStackCondition: aStack
+	
+	^aStack isFull.! !
+
+
+!classDefinition: #NonEmptyNotFullStack category: 'Stack-Exercise'!
+OOStackCondition subclass: #NonEmptyNotFullStack
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!NonEmptyNotFullStack methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 16:59:22'!
+popFrom: aStack
+
+	^aStack safePop.! !
+
+!NonEmptyNotFullStack methodsFor: 'stack accessing' stamp: 'EF 6/10/2021 16:30:10'!
+push: aContent to: aStack
+
+	^aStack safePush: aContent.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'NonEmptyNotFullStack class' category: 'Stack-Exercise'!
+NonEmptyNotFullStack class
+	instanceVariableNames: ''!
+
+!NonEmptyNotFullStack class methodsFor: 'matching' stamp: 'EF 6/10/2021 17:09:59'!
+matchesStackCondition: aStack
+
+	^aStack isEmpty not and: [aStack isFull not].! !
+
 
 !classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
 Object subclass: #SentenceFinderByPrefix
@@ -321,7 +621,7 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'finding' stamp: 'EF 6/8/2021 00:17:06'!
+!SentenceFinderByPrefix methodsFor: 'finding' stamp: 'EF 6/10/2021 18:15:38'!
 find
 		
 	self findSentencesByPrefix.
@@ -356,11 +656,11 @@ initializeWithPrefix: aPrefix andStack: aStack
 	foundSentences := OrderedCollection new.! !
 
 
-!SentenceFinderByPrefix methodsFor: 'restoration - private' stamp: 'EF 6/8/2021 10:03:15'!
+!SentenceFinderByPrefix methodsFor: 'restoration - private' stamp: 'EF 6/8/2021 10:44:02'!
 restoreStackOrder
 
 	reversedStackOfSentences size timesRepeat: [
-		stackOfSentences push: reversedStackOfSentences pop.].! !
+		stackOfSentences push: reversedStackOfSentences pop].! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -368,31 +668,22 @@ restoreStackOrder
 SentenceFinderByPrefix class
 	instanceVariableNames: ''!
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'EF 6/7/2021 23:48:17'!
-assertPrefixCanNotBeEmpty: aPrefix
-	
-	aPrefix = '' ifTrue: [ self error: self emptyPrefixErrorDescription ].! !
-
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'EF 6/8/2021 02:49:42'!
-assertPrefixCanNotContainSpaces: aPrefix
-
-	(self includesSpaces: aPrefix) ifTrue: [self error: self spacesInPrefixErrorDescription ].
-! !
-
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'EF 6/7/2021 22:55:27'!
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'EF 6/7/2021 22:55:27'!
 emptyPrefixErrorDescription
 	^'Prefix can not be empty'! !
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'EF 6/8/2021 02:54:03'!
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'EF 6/8/2021 00:28:16'!
+spacesInPrefixErrorDescription
+	^'Prefix can not contain spaces'! !
+
+
+!SentenceFinderByPrefix class methodsFor: 'checks' stamp: 'EF 6/8/2021 02:54:03'!
 includesSpaces: aPrefix
 
 	^(aPrefix findString: ' ') > 0.! !
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'EF 6/8/2021 00:28:16'!
-spacesInPrefixErrorDescription
-	^'Prefix can not contain spaces'! !
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'EF 6/7/2021 23:48:50'!
+!SentenceFinderByPrefix class methodsFor: 'instantiation' stamp: 'EF 6/7/2021 23:48:50'!
 withPrefix: aPrefix andStack: aStack
 	
 	self assertPrefixCanNotBeEmpty: aPrefix.
@@ -400,25 +691,40 @@ withPrefix: aPrefix andStack: aStack
 	
 	^SentenceFinderByPrefix new initializeWithPrefix: aPrefix andStack: aStack.! !
 
+
+!SentenceFinderByPrefix class methodsFor: 'assertions' stamp: 'EF 6/7/2021 23:48:17'!
+assertPrefixCanNotBeEmpty: aPrefix
+	
+	aPrefix = '' ifTrue: [ self error: self emptyPrefixErrorDescription ].! !
+
+!SentenceFinderByPrefix class methodsFor: 'assertions' stamp: 'EF 6/8/2021 02:49:42'!
+assertPrefixCanNotContainSpaces: aPrefix
+
+	(self includesSpaces: aPrefix) ifTrue: [self error: self spacesInPrefixErrorDescription ].
+! !
+
 
 !classDefinition: #StackPlate category: 'Stack-Exercise'!
 Object subclass: #StackPlate
-	instanceVariableNames: 'content lowerPlate'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!StackPlate methodsFor: 'accessing' stamp: 'EF 6/7/2021 20:55:38'!
+!StackPlate methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:05:53'!
 content
+
 	self subclassResponsibility ! !
 
-!StackPlate methodsFor: 'accessing' stamp: 'EF 6/7/2021 15:44:12'!
+!StackPlate methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:05:57'!
 lowerPlate
+
 	self subclassResponsibility.! !
 
 
-!StackPlate methodsFor: 'counting' stamp: 'EF 6/8/2021 10:11:35'!
+!StackPlate methodsFor: 'counting' stamp: 'EF 6/10/2021 18:06:02'!
 platesUntilBase
+
 	self subclassResponsibility.! !
 
 
@@ -435,24 +741,27 @@ platesUntilBase
 	^0.! !
 
 
-!StackBasePlate methodsFor: 'accessing' stamp: 'EF 6/7/2021 20:54:17'!
+!StackBasePlate methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:12:16'!
 content
-	self error: OOStack stackEmptyErrorDescription.! !
+	
+	^self error: OOStack stackEmptyErrorDescription.! !
 
-!StackBasePlate methodsFor: 'accessing' stamp: 'EF 6/7/2021 19:58:30'!
+!StackBasePlate methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:12:43'!
 lowerPlate
+
 	^self.! !
 
 
 !classDefinition: #StackRemovablePlate category: 'Stack-Exercise'!
 StackPlate subclass: #StackRemovablePlate
-	instanceVariableNames: ''
+	instanceVariableNames: 'content lowerPlate'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!StackRemovablePlate methodsFor: 'accessing' stamp: 'EF 6/7/2021 20:54:41'!
+!StackRemovablePlate methodsFor: 'accessing' stamp: 'EF 6/10/2021 18:06:15'!
 content
+
 	^content.! !
 
 !StackRemovablePlate methodsFor: 'accessing' stamp: 'EF 6/7/2021 15:46:27'!
