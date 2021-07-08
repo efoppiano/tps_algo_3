@@ -334,8 +334,8 @@ test12TransferValueShouldBePositive
 		self assert: 50*peso equals: withdrawAccount balance.
 		self assert: 0*peso equals: depositAccount balance]! !
 
-!ReceptiveAccountTest methodsFor: 'tests' stamp: 'EF 7/8/2021 15:57:51'!
-test13AccountInvolvedInTransferShouldBeDifferent
+!ReceptiveAccountTest methodsFor: 'tests' stamp: 'EF 7/8/2021 17:32:07'!
+test13AccountsInvolvedInTransferShouldBeDifferent
 
 	| account |
 	
